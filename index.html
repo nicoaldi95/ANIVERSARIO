@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nuestra Historia — 5 Años Juntos</title>
+
+  <!-- Carga de tipografías elegantes de Google Fonts (manuscrita, editorial y cuerpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <!-- Enlace al archivo externo de estilos CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Lienzo de fondo donde JS dibuja las partículas doradas flotantes -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Reproductor de audio de fondo: coloca un archivo llamado "musica.mp3" junto al HTML -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Selector de archivos oculto para previsualizar fotos desde el navegador -->
+  <input type="file" id="global-photo-input" class="hidden-file-input" accept="image/*" />
+
+  <!-- =======================================================================
+       PANTALLA DE BLOQUEO CON PIN (Replica la entrada privada del video)
+       ======================================================================= -->
+  <div id="lock-screen">
+    <div class="lock-card">
+      <div class="lock-badge">5</div>
+      <h1 class="lock-title">Nuestra Historia</h1>
+      <p class="lock-subtitle">Ingresa la contraseña especial</p>
+      <p class="lock-hint" id="lock-hint-text">Pista: El año en que comenzó todo</p>
+
+      <!-- Puntos indicadores de los 4 dígitos ingresados -->
+      <div class="pin-display" id="pin-display">
+        <span class="pin-dot"></span>
+        <span class="pin-dot"></span>
+        <span class="pin-dot"></span>
+        <span class="pin-dot"></span>
+      </div>
+
+      <!-- Teclado numérico interactivo -->
+      <div class="keypad">
+        <button class="key-btn" data-key="1">1</button>
+        <button class="key-btn" data-key="2">2</button>
+        <button class="key-btn" data-key="3">3</button>
+        <button class="key-btn" data-key="4">4</button>
+        <button class="key-btn" data-key="5">5</button>
+        <button class="key-btn" data-key="6">6</button>
+        <button class="key-btn" data-key="7">7</button>
+        <button class="key-btn" data-key="8">8</button>
+        <button class="key-btn" data-key="9">9</button>
+        <button class="key-btn" data-key="del" title="Borrar">⌫</button>
+        <button class="key-btn" data-key="0">0</button>
+        <button class="key-btn" data-key="clear" title="Limpiar">✕</button>
+      </div>
+
+      <button class="btn-enter" id="btn-unlock">Entrar</button>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       BOTÓN FLOTANTE DE MÚSICA (Esquina superior derecha)
+       ======================================================================= -->
+  <div class="floating-controls">
+    <button class="ctrl-btn" id="music-toggle" title="Activar o pausar música">
+      <div class="music-bars">
+        <span></span><span></span><span></span>
+      </div>
+      <span id="music-label">Música</span>
+    </button>
+  </div>
+
+  <!-- =======================================================================
+       CONTENIDO PRINCIPAL DEL SITIO (6 SECCIONES)
+       ======================================================================= -->
+  <main id="main-content">
+
+    <!-- SECCIÓN 1: LA BIENVENIDA -->
+    <section id="bienvenida">
+      <div class="hero-frame reveal in-view">
+        <span class="hero-years">5 años de ti, de mí y de nosotros</span>
+        <h1 class="hero-title gold-text">Nuestra Historia</h1>
+        <p class="hero-quote">“Una historia que comenzó con dos personas y que hoy sigue construyéndose día a día.”</p>
+        <p class="hero-sub">
+          Este pequeño rincón fue creado exclusivamente para ti, para recordar de dónde venimos, celebrar el hogar que somos y mirar juntos todo lo que aún nos falta por vivir.
+        </p>
+        <a href="#comienzo" class="btn-primary" id="btn-start">
+          Comenzar nuestro viaje <span>↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: EL COMIENZO (Relato + Carrusel estilo película con carga de fotos) -->
+    <section id="comienzo">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Capítulo I</span>
+        <h2 class="section-title">El Comienzo</h2>
+        <p class="section-desc">Las primeras fotografías, las miradas nerviosas y el instante en que todo empezó a cambiar.</p>
+        <div class="ornament-divider"><span>✦</span></div>
+      </div>
+
+      <div class="beginning-story reveal">
+        <p>
+          Todo inició hace cinco años, casi sin darnos cuenta de que estábamos escribiendo los primeros renglones de la historia más importante de nuestras vidas. Bastaron las primeras charlas, las primeras risas y esas fotos guardadas como tesoros para saber que contigo quería intentar todo.
+        </p>
+      </div>
+
+      <!-- Carrusel con marco de rollo 35mm -->
+      <div class="carousel-wrapper reveal" id="carousel-wrapper">
+        <div class="film-sprockets">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <button class="carousel-nav carousel-prev" id="carousel-prev" aria-label="Anterior">‹</button>
+        <button class="carousel-nav carousel-next" id="carousel-next" aria-label="Siguiente">›</button>
+
+        <div class="carousel-viewport">
+          <!-- Aquí JS inyecta cada diapositiva del carrusel -->
+          <div class="carousel-track" id="carousel-track"></div>
+        </div>
+
+        <div class="film-sprockets bottom">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <div class="carousel-controls-bottom">
+          <div class="carousel-dots" id="carousel-dots"></div>
+          <button class="btn-small-gold" id="btn-add-slide">+ Agregar foto al carrusel</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: NUESTROS RECUERDOS (Galería interactiva con 16 fotografías) -->
+    <section id="recuerdos">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Capítulo II</span>
+        <h2 class="section-title">Nuestros Recuerdos</h2>
+        <p class="section-desc">11 fotografías que guardan instantes irrepetibles. Toca cualquiera para leer su historia o cargar tu foto.</p>
+        <div class="ornament-divider"><span>✦</span></div>
+      </div>
+
+      <!-- Aquí JS genera las 16 tarjetas interactivas -->
+      <div class="memories-grid" id="memories-grid"></div>
+    </section>
+
+    <!-- SECCIÓN 4: NUESTRO HOGAR (4 años de convivencia + contadores en vivo) -->
+    <section id="hogar">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Capítulo III</span>
+        <h2 class="section-title">Nuestro Hogar</h2>
+        <p class="section-desc">Cuatro años de convivencia, porque amar también es aprender a construir juntos cada mañana.</p>
+        <div class="ornament-divider"><span>✦</span></div>
+      </div>
+
+      <!-- Contadores en tiempo real -->
+      <div class="counters-grid reveal">
+        <div class="counter-box">
+          <div class="counter-label">Tiempo desde nuestro comienzo (5 años)</div>
+          <div class="counter-digits" id="counter-relationship">0000 : 00 : 00 : 00</div>
+          <div class="counter-units">Días : Horas : Minutos : Segundos</div>
+        </div>
+        <div class="counter-box">
+          <div class="counter-label">Tiempo desde que Naciste</div>
+          <div class="counter-digits" id="counter-home">0000 : 00 : 00 : 00</div>
+          <div class="counter-units">Días : Horas : Minutos : Segundos</div>
+          <div class="counter-units">Desde que naciste, has sido lo mas preciado de mi vida.</div>
+        </div>
+      </div>
+
+      <!-- Tarjetas con los pilares de estos 4 años viviendo juntos -->
+      <div class="home-pillars reveal">
+        <div class="pillar-card">
+          <span class="pillar-date">Año 1 de convivencia</span>
+          <h3>El primer techo compartido</h3>
+          <p>Aprender tus rutinas, descubrir cómo te gusta el café y convertir un lugar vacío en un refugio con tu olor y tu risa.</p>
+        </div>
+        <div class="pillar-card">
+          <span class="pillar-date">Años 2 y 3</span>
+          <h3>Aprender en la tormenta y la calma</h3>
+          <p>Descubrir que el amor verdadero no es perfección, sino elegirnos todos los días, ceder, escuchar y cuidarnos.</p>
+        </div>
+        <div class="pillar-card">
+          <span class="pillar-date">Hoy — 4 años juntos en casa</span>
+          <h3>Mi lugar favorito del mundo</h3>
+          <p>Después de cuatro años viviendo bajo el mismo techo, entendí que mi hogar nunca fue una dirección: siempre fuiste tú.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 5: LO QUE SIENTO POR TI (Disparador de la carta romántica) -->
+    <section id="carta">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Capítulo IV</span>
+        <h2 class="section-title">Lo Que Siento Por Ti</h2>
+        <p class="section-desc">Palabras que nacen cuando el silencio de la noche me recuerda lo afortunado que soy de tenerte.</p>
+        <div class="ornament-divider"><span>✦</span></div>
+      </div>
+
+      <div class="letter-trigger-wrap reveal">
+        <p class="letter-intro-text">
+          Guardé esta carta especialmente para nuestro quinto aniversario. Toca el corazón para abrirla.
+        </p>
+        <button class="heart-btn" id="open-letter-btn">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span>Lee Mi Carta</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 6: LO QUE TODAVÍA NOS ESPERA (Mensaje final + medidor + firma) -->
+    <section id="futuro">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Capítulo Final</span>
+        <h2 class="section-title">Lo Que Todavía Nos Espera</h2>
+        <div class="ornament-divider"><span>✦</span></div>
+      </div>
+
+      <div class="future-card reveal">
+        <p>
+          Cinco años parecen mucho tiempo hasta que pienso en todo lo que quiero vivir contigo todavía: los viajes que aún no planeamos, los domingos tranquilos en casa, las metas que vamos a cumplir de la mano y las canas que nos veremos crecer sin soltarnos jamás. Gracias por hacer de estos años los mejores de mi vida.
+        </p>
+
+        <div class="love-meter-box">
+          <div class="love-meter-title">Nuestro Amor</div>
+          <div class="meter-track">
+            <div class="meter-fill"></div>
+          </div>
+          <div class="meter-caption">100% Tuyo, hoy y siempre</div>
+        </div>
+
+        <div class="signature-block">
+          <p class="signature-lead">Con todo mi corazón,</p>
+          <div class="signature-name" id="signature-display">Tu Amor</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Creado exclusivamente para ti • 5 años de historia y 4 años de hogar
+    </footer>
+  </main>
+
+  <!-- =======================================================================
+       VENTANA MODAL 1: CARTA ESCRITA POR TI
+       ======================================================================= -->
+  <div class="modal-overlay" id="letter-modal">
+    <div class="letter-paper">
+      <button class="modal-close" id="close-letter-modal" aria-label="Cerrar carta">✕</button>
+      <div class="letter-header">
+        <h3>Para el amor de mi vida</h3>
+      </div>
+      <!-- Edita aquí los párrafos de tu carta -->
+      <div class="letter-body" id="letter-body-content">
+        <p>Mi amor,</p>
+        <p>
+          Hoy cumplimos cinco años desde que decidimos caminar juntos, y cuatro desde que empezamos a construir nuestro propio hogar. Si cierro los ojos, todavía puedo recordar la emoción del primer día, la incertidumbre bonita del comienzo y cómo poco a poco fuiste convirtiéndote en mi paz.
+        </p>
+        <p>
+          Gracias por estos cuatro años de convivencia, por enseñarme que amar no es solo celebrar los momentos fáciles, sino sostenernos cuando el mundo pesa, reír hasta tarde en la cocina y hacer equipo en cada pequeño detalle de la vida diaria.
+        </p>
+        <p>
+          No cambiaría ni un solo paso del camino que nos trajo hasta aquí. Te vuelvo a elegir hoy, con la misma ilusión del primer día, pero con la certeza profunda de quien ya sabe que encontró a su persona para toda la vida.
+        </p>
+        <p>Feliz aniversario. Por cinco años juntos y por todos los que nos esperan.</p>
+      </div>
+      <div class="letter-sign" id="letter-sign-display">Siempre tuyo</div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       VENTANA MODAL 2: VISOR DE CADA UNO DE LOS 11 RECUERDOS
+       ======================================================================= -->
+  <div class="modal-overlay" id="memory-modal">
+    <div class="memory-modal-box">
+      <button class="memory-modal-close" id="close-memory-modal" aria-label="Cerrar">✕</button>
+      <div class="memory-modal-img-wrap film-photo" id="memory-modal-img-wrap"></div>
+      <div class="memory-modal-content">
+        <h3 id="memory-modal-title">Recuerdo</h3>
+        <p id="memory-modal-text"></p>
+      </div>
+      <div class="memory-modal-actions">
+        <div class="modal-btn-group">
+          <button class="btn-small-gold" id="memory-prev-btn">‹ Anterior</button>
+          <button class="btn-small-gold" id="memory-next-btn">Siguiente ›</button>
+        </div>
+        <div class="modal-btn-group">
+          <button class="btn-small-gold" id="memory-upload-btn">📷 Subir / Cambiar foto</button>
+          <button class="btn-small-gold" id="memory-edit-msg-btn">✎ Editar mensaje</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enlace al archivo externo de JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>

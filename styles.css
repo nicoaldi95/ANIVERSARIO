@@ -1,0 +1,1252 @@
+/* ============================================================================
+   1. VARIABLES DE COLOR Y TIPOGRAFÍA (Paleta Studio Ghibli)
+   - Verde bosque y musgo (Totoro / Mononoke)
+   - Azul cielo atardecer (El Castillo Ambulante)
+   - Crema acuarela, ámbar de farol y coral terracota (Chihiro / Kiki)
+   ============================================================================ */
+:root {
+  --bg-deep: #101b18;
+  --bg-soft: #172722;
+  --forest-dark: #1d352d;
+  --forest: #2d5043;
+  --forest-light: #4a7865;
+  --sky-teal: #2c4e57;
+  --sky-soft: #85b6bf;
+  --terracotta: #b85243;
+  --terracotta-light: #d97764;
+  --cream: #faf3e0;
+  --cream-soft: #d7d2be;
+  --gold: #e2b052;
+  --gold-light: #f8d98e;
+  --gold-dim: rgba(226, 176, 82, 0.32);
+  --border-glass: rgba(168, 209, 186, 0.25);
+  --card-bg: rgba(23, 41, 35, 0.82);
+
+  --font-script: 'Great Vibes', cursive;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-body: 'Lora', serif;
+}
+
+/* ============================================================================
+   2. RESET Y ESTILOS BASE DEL DOCUMENTO
+   ============================================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--cream);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  overflow-x: hidden;
+  /* Fondo degradado tipo cielo crepuscular sobre bosque encantado */
+  background-image:
+    radial-gradient(circle at 18% 15%, rgba(44, 78, 87, 0.42) 0%, transparent 50%),
+    radial-gradient(circle at 82% 72%, rgba(45, 80, 67, 0.48) 0%, transparent 52%),
+    radial-gradient(circle at 50% 45%, rgba(226, 176, 82, 0.07) 0%, transparent 60%),
+    linear-gradient(180deg, #0e1815 0%, #162621 50%, #0f1a17 100%);
+  min-height: 100vh;
+}
+
+/* Textura sutil tipo papel de acuarela artesanal */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Lienzo fijo para las luciérnagas mágicas */
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gold-text {
+  background: linear-gradient(135deg, #fdf0c4 0%, #e5b557 52%, #d98667 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================================
+   3. PANTALLA DE BLOQUEO CON PIN
+   ============================================================================ */
+#lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: radial-gradient(circle at center, rgba(45, 80, 67, 0.45) 0%, rgba(13, 23, 20, 0.97) 75%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
+}
+
+#lock-screen.unlocked {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.lock-card {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(20, 35, 30, 0.92);
+  border: 1px solid var(--border-glass);
+  border-radius: 24px;
+  padding: 32px 24px 28px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(5, 12, 10, 0.72), inset 0 0 30px rgba(45, 80, 67, 0.3);
+  backdrop-filter: blur(12px);
+}
+
+.lock-badge {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  background: radial-gradient(circle, rgba(74, 120, 101, 0.55), rgba(19, 34, 29, 0.95));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-script);
+  font-size: 2.1rem;
+  color: var(--gold-light);
+  box-shadow: 0 0 25px rgba(226, 176, 82, 0.25);
+}
+
+.lock-title {
+  font-family: var(--font-script);
+  font-size: 2.3rem;
+  color: var(--gold-light);
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.lock-subtitle {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--cream-soft);
+  margin-bottom: 4px;
+}
+
+.lock-hint {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--sky-soft);
+  opacity: 0.95;
+  margin-bottom: 18px;
+}
+
+.pin-display {
+  height: 46px;
+  background: rgba(11, 20, 17, 0.75);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s;
+}
+
+.pin-display.error {
+  border-color: var(--terracotta-light);
+  animation: shake 0.4s ease;
+}
+
+.pin-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  transition: all 0.2s ease;
+}
+
+.pin-dot.filled {
+  background: var(--gold-light);
+  box-shadow: 0 0 10px rgba(248, 217, 142, 0.8);
+  transform: scale(1.1);
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+  max-width: 270px;
+  margin: 0 auto 18px;
+}
+
+.key-btn {
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid rgba(168, 209, 186, 0.24);
+  background: linear-gradient(145deg, rgba(45, 80, 67, 0.52), rgba(20, 36, 31, 0.88));
+  color: var(--cream);
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.key-btn:hover {
+  border-color: var(--gold);
+  background: linear-gradient(145deg, rgba(74, 120, 101, 0.62), rgba(29, 53, 45, 0.92));
+}
+
+.key-btn:active {
+  transform: scale(0.94);
+}
+
+.btn-enter {
+  width: 100%;
+  max-width: 270px;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1px solid var(--gold);
+  background: linear-gradient(135deg, var(--forest) 0%, var(--sky-teal) 100%);
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 6px 20px rgba(13, 28, 24, 0.55);
+}
+
+.btn-enter:hover {
+  background: linear-gradient(135deg, var(--forest-light) 0%, var(--forest) 100%);
+  box-shadow: 0 8px 25px rgba(226, 176, 82, 0.25);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-5px); }
+}
+
+/* ============================================================================
+   4. CONTROL FLOTANTE DE MÚSICA
+   ============================================================================ */
+.floating-controls {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 200;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.ctrl-btn {
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-glass);
+  background: rgba(19, 34, 29, 0.88);
+  backdrop-filter: blur(10px);
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.ctrl-btn:hover {
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.music-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.music-bars span {
+  width: 2.5px;
+  height: 4px;
+  background: var(--gold-light);
+  border-radius: 2px;
+}
+
+.ctrl-btn.playing .music-bars span:nth-child(1) { animation: bar 0.8s infinite alternate; }
+.ctrl-btn.playing .music-bars span:nth-child(2) { animation: bar 0.6s 0.2s infinite alternate; }
+.ctrl-btn.playing .music-bars span:nth-child(3) { animation: bar 0.9s 0.4s infinite alternate; }
+
+@keyframes bar {
+  from { height: 4px; }
+  to { height: 14px; }
+}
+
+/* ============================================================================
+   5. ESTRUCTURA GENERAL DE SECCIONES Y ANIMACIÓN SCROLL
+   ============================================================================ */
+main {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+main.visible {
+  opacity: 1;
+}
+
+section {
+  padding: 90px 20px;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-eyebrow {
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 3.5px;
+  font-size: 0.78rem;
+  color: var(--sky-soft);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: var(--font-script);
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  color: var(--cream);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.section-desc {
+  max-width: 620px;
+  margin: 0 auto;
+  color: var(--cream-soft);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 22px auto 0;
+  max-width: 240px;
+}
+
+.ornament-divider::before,
+.ornament-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.ornament-divider span {
+  color: var(--gold-light);
+  font-size: 0.9rem;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.85s ease, transform 0.85s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   6. SECCIÓN 1: LA BIENVENIDA (PORTADA)
+   ============================================================================ */
+#bienvenida {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.hero-frame {
+  max-width: 760px;
+  padding: 52px 32px;
+  border-radius: 28px;
+  border: 1px solid var(--border-glass);
+  background: radial-gradient(circle at top, rgba(44, 78, 87, 0.42), rgba(18, 32, 27, 0.84));
+  box-shadow: 0 30px 70px rgba(7, 15, 12, 0.65);
+  backdrop-filter: blur(8px);
+}
+
+.hero-years {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-dim);
+  background: rgba(45, 80, 67, 0.45);
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  letter-spacing: 2.5px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.hero-title {
+  font-family: var(--font-script);
+  font-size: clamp(3rem, 8vw, 5.2rem);
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+  font-style: italic;
+  color: var(--cream);
+  margin-bottom: 16px;
+}
+
+.hero-sub {
+  color: var(--cream-soft);
+  font-size: 1rem;
+  max-width: 540px;
+  margin: 0 auto 34px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 34px;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  background: linear-gradient(135deg, var(--forest) 0%, var(--sky-teal) 100%);
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  letter-spacing: 0.8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(15, 32, 27, 0.6);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--forest-light) 0%, var(--forest) 100%);
+  box-shadow: 0 14px 35px rgba(226, 176, 82, 0.25);
+}
+
+/* ============================================================================
+   7. ACABADO PICTÓRICO GHIBLI PARA TODAS LAS FOTOGRAFÍAS
+   (Realza colores suaves y luminosos sin apagar los verdes ni los cielos)
+   ============================================================================ */
+.film-photo {
+  position: relative;
+  overflow: hidden;
+  background-color: #162621;
+}
+
+.film-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Toque cálido y vibrante estilo ilustración animada */
+  filter: saturate(1.08) contrast(1.03) brightness(0.98);
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+
+.film-photo::after {
+  /* Halo suave de luz solar dorada en los bordes */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 36px rgba(13, 25, 21, 0.48);
+  background: linear-gradient(180deg, rgba(248, 217, 142, 0.06) 0%, rgba(28, 53, 45, 0.1) 100%);
+}
+
+.film-photo:hover img {
+  transform: scale(1.03);
+  filter: saturate(1.12) contrast(1.04) brightness(1.02);
+}
+
+/* ============================================================================
+   8. SECCIÓN 2: EL COMIENZO (CARRUSEL 35MM)
+   ============================================================================ */
+.beginning-story {
+  background: var(--card-bg);
+  border: 1px solid var(--border-glass);
+  border-radius: 22px;
+  padding: 30px;
+  margin-bottom: 36px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(7, 15, 12, 0.45);
+}
+
+.beginning-story p {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  color: var(--cream);
+}
+
+.carousel-wrapper {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+  background: #14231e;
+  border: 1px solid var(--border-glass);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 24px 60px rgba(6, 14, 11, 0.65);
+}
+
+.film-sprockets {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px 10px;
+  opacity: 0.45;
+}
+
+.film-sprockets.bottom {
+  padding: 10px 8px 0;
+}
+
+.film-sprockets span {
+  width: 14px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--cream-soft);
+  opacity: 0.45;
+}
+
+.carousel-viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(226, 176, 82, 0.22);
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.carousel-slide {
+  min-width: 100%;
+  position: relative;
+}
+
+.carousel-image-box {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .carousel-image-box {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Recuadro cuando aún falta colocar la foto en la carpeta fotos/ */
+.upload-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  text-align: center;
+  background: radial-gradient(circle, rgba(45, 80, 67, 0.52), rgba(16, 27, 24, 0.94));
+  color: var(--cream-soft);
+  cursor: pointer;
+  z-index: 3;
+}
+
+.upload-placeholder .upload-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px dashed var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--gold-light);
+  background: rgba(44, 78, 87, 0.45);
+  transition: transform 0.25s;
+}
+
+.upload-placeholder:hover .upload-icon {
+  transform: scale(1.08);
+}
+
+.placeholder-path {
+  font-size: 0.78rem;
+  color: var(--sky-soft);
+  opacity: 0.95;
+  font-family: monospace;
+}
+
+.slide-change-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-dim);
+  background: rgba(16, 27, 24, 0.8);
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: all 0.2s;
+  backdrop-filter: blur(6px);
+}
+
+.slide-change-btn:hover {
+  opacity: 1;
+  border-color: var(--gold);
+}
+
+.carousel-caption {
+  padding: 16px 20px 10px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(20, 35, 30, 0.92), rgba(16, 27, 24, 1));
+}
+
+.carousel-caption h4 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+
+.carousel-caption p {
+  font-size: 0.92rem;
+  color: var(--cream-soft);
+  font-style: italic;
+}
+
+.carousel-nav {
+  position: absolute;
+  top: 44%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-dim);
+  background: rgba(16, 27, 24, 0.84);
+  color: var(--gold-light);
+  font-size: 1.25rem;
+  cursor: pointer;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.carousel-nav:hover {
+  background: var(--forest);
+  border-color: var(--gold);
+}
+
+.carousel-prev { left: 26px; }
+.carousel-next { right: 26px; }
+
+.carousel-controls-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 0 6px;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(250, 243, 224, 0.25);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.dot.active {
+  width: 24px;
+  border-radius: 999px;
+  background: var(--gold);
+}
+
+.btn-small-gold {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-dim);
+  background: rgba(45, 80, 67, 0.5);
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-small-gold:hover {
+  border-color: var(--gold);
+  background: rgba(74, 120, 101, 0.65);
+}
+
+/* ============================================================================
+   9. SECCIÓN 3: GALERÍA DE 16 RECUERDOS (RESPONSIVA)
+   ============================================================================ */
+.memories-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 920px) {
+  .memories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .memories-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.memory-card {
+  background: #172722;
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  padding: 10px 10px 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 12px 30px rgba(6, 14, 11, 0.45);
+  display: flex;
+  flex-direction: column;
+}
+
+.memory-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--gold);
+  box-shadow: 0 18px 36px rgba(45, 80, 67, 0.45);
+}
+
+.memory-thumb {
+  aspect-ratio: 4 / 4.2;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.memory-num {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 4;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(16, 27, 24, 0.82);
+  border: 1px solid var(--gold-dim);
+  color: var(--gold-light);
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.memory-meta {
+  text-align: center;
+  padding: 0 4px;
+}
+
+.memory-meta h4 {
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+
+.memory-meta p {
+  font-size: 0.82rem;
+  color: var(--cream-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-style: italic;
+}
+
+/* ============================================================================
+   10. SECCIÓN 4: NUESTRO HOGAR (CONTADORES Y PILARES)
+   ============================================================================ */
+.counters-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  margin-bottom: 36px;
+}
+
+@media (max-width: 720px) {
+  .counters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.counter-box {
+  background: linear-gradient(160deg, rgba(44, 78, 87, 0.55), rgba(18, 32, 27, 0.92));
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 28px 20px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(7, 15, 12, 0.45);
+}
+
+.counter-label {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+
+.counter-digits {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--cream);
+  text-shadow: 0 0 18px rgba(226, 176, 82, 0.28);
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-units {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--sky-soft);
+  margin-top: 6px;
+  opacity: 0.95;
+}
+
+.home-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 780px) {
+  .home-pillars {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pillar-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-glass);
+  border-radius: 18px;
+  padding: 26px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pillar-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--gold), var(--forest-light));
+}
+
+.pillar-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+
+.pillar-card .pillar-date {
+  font-size: 0.8rem;
+  color: var(--sky-soft);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.pillar-card p {
+  font-size: 0.95rem;
+  color: var(--cream-soft);
+}
+
+/* ============================================================================
+   11. SECCIÓN 5: BOTÓN DE CORAZÓN PARA LA CARTA (CORAL TERRACOTA Y DORADO)
+   ============================================================================ */
+.letter-trigger-wrap {
+  text-align: center;
+  padding: 40px 20px;
+  background: radial-gradient(circle, rgba(45, 80, 67, 0.42) 0%, rgba(16, 27, 24, 0.8) 75%);
+  border: 1px solid var(--border-glass);
+  border-radius: 26px;
+}
+
+.letter-intro-text {
+  color: var(--cream-soft);
+  max-width: 500px;
+  margin: 0 auto 10px;
+}
+
+.heart-btn {
+  width: 138px;
+  height: 138px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  background: radial-gradient(circle at 35% 30%, var(--terracotta-light), var(--terracotta));
+  color: var(--cream);
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 16px auto;
+  box-shadow: 0 0 35px rgba(184, 82, 67, 0.48), 0 0 15px rgba(226, 176, 82, 0.3);
+  animation: heartbeat 2.2s infinite ease-in-out;
+  transition: transform 0.25s;
+}
+
+.heart-btn:hover {
+  animation: none;
+  transform: scale(1.07);
+}
+
+.heart-btn svg {
+  width: 34px;
+  height: 34px;
+  fill: var(--cream);
+}
+
+.heart-btn span {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  letter-spacing: 0.5px;
+  color: var(--cream);
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.08); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.06); }
+  70% { transform: scale(1); }
+}
+
+/* ============================================================================
+   12. SECCIÓN 6: EL FUTURO, MEDIDOR DE AMOR Y PIE DE PÁGINA
+   ============================================================================ */
+.future-card {
+  background: linear-gradient(145deg, rgba(35, 62, 54, 0.72), rgba(16, 27, 24, 0.95));
+  border: 1px solid var(--border-glass);
+  border-radius: 26px;
+  padding: 46px 28px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(7, 15, 12, 0.55);
+}
+
+.future-card > p {
+  max-width: 660px;
+  margin: 0 auto 30px;
+  font-size: 1.08rem;
+  color: var(--cream);
+}
+
+.love-meter-box {
+  max-width: 440px;
+  margin: 0 auto 34px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: rgba(14, 24, 21, 0.65);
+  border: 1px solid var(--gold-dim);
+}
+
+.love-meter-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+
+.meter-track {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(250, 243, 224, 0.12);
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 1px solid rgba(226, 176, 82, 0.28);
+}
+
+.meter-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--forest-light) 0%, var(--terracotta-light) 55%, var(--gold-light) 100%);
+  box-shadow: 0 0 12px rgba(226, 176, 82, 0.5);
+}
+
+.meter-caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--cream-soft);
+  font-size: 1rem;
+}
+
+.signature-block {
+  margin-top: 24px;
+}
+
+.signature-lead {
+  font-style: italic;
+  color: var(--cream-soft);
+  margin-bottom: 4px;
+}
+
+.signature-name {
+  font-family: var(--font-script);
+  font-size: 2.8rem;
+  color: var(--gold-light);
+  line-height: 1.2;
+}
+
+footer {
+  text-align: center;
+  padding: 36px 20px 50px;
+  color: var(--cream-soft);
+  font-size: 0.85rem;
+  opacity: 0.8;
+  border-top: 1px solid rgba(168, 209, 186, 0.16);
+}
+
+/* ============================================================================
+   13. VENTANAS MODALES (CARTA Y VISOR DE RECUERDOS)
+   ============================================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(8, 15, 13, 0.86);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Carta en papel crema cálido con tinta verde bosque y títulos terracota */
+.letter-paper {
+  width: 100%;
+  max-width: 640px;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #fcf6e8 0%, #f1e4c8 100%);
+  color: #21342c;
+  border-radius: 18px;
+  padding: 42px 34px 36px;
+  position: relative;
+  border: 2px solid var(--gold);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75);
+  transform: translateY(20px);
+  transition: transform 0.35s ease;
+}
+
+.modal-overlay.open .letter-paper,
+.modal-overlay.open .memory-modal-box {
+  transform: translateY(0);
+}
+
+.modal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(45, 80, 67, 0.35);
+  background: rgba(252, 246, 232, 0.92);
+  color: var(--forest-dark);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.letter-header {
+  text-align: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(45, 80, 67, 0.22);
+  padding-bottom: 16px;
+}
+
+.letter-header h3 {
+  font-family: var(--font-script);
+  font-size: 2.7rem;
+  color: var(--terracotta);
+}
+
+.letter-body {
+  font-family: var(--font-body);
+  font-size: 1.04rem;
+  line-height: 1.85;
+  color: #263a31;
+}
+
+.letter-body p {
+  margin-bottom: 16px;
+}
+
+.letter-sign {
+  margin-top: 26px;
+  text-align: right;
+  font-family: var(--font-script);
+  font-size: 2.3rem;
+  color: var(--terracotta);
+}
+
+.memory-modal-box {
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #15241f;
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+  transform: translateY(20px);
+  transition: transform 0.35s ease;
+}
+
+.memory-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-dim);
+  background: rgba(16, 27, 24, 0.88);
+  color: var(--gold-light);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.memory-modal-img-wrap {
+  aspect-ratio: 16 / 11;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.memory-modal-content h3 {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+
+.memory-modal-content p {
+  color: var(--cream);
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+
+.memory-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid rgba(168, 209, 186, 0.2);
+  padding-top: 14px;
+}
+
+.modal-btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hidden-file-input {
+  display: none;
+}
