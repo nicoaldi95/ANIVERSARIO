@@ -401,17 +401,17 @@ function goToSlide(idx) {
 document.getElementById("carousel-prev").addEventListener("click", () => goToSlide(currentSlide - 1));
 document.getElementById("carousel-next").addEventListener("click", () => goToSlide(currentSlide + 1));
 
-document.getElementById("btn-add-slide").addEventListener("click", () => {
-  const n = appState.carrusel.length + 1;
-  appState.carrusel.push({
-    img: `fotos/inicio-${n}.jpg`,
-    titulo: `Capítulo especial #${n}`,
-    mensaje: "Otro instante de nuestro comienzo guardado para siempre."
-  });
-  saveData();
-  currentSlide = appState.carrusel.length - 1;
-  renderCarousel();
-});
+// document.getElementById("btn-add-slide").addEventListener("click", () => {
+//   const n = appState.carrusel.length + 1;
+//   appState.carrusel.push({
+//     img: `fotos/inicio-${n}.jpg`,
+//     titulo: `Capítulo especial #${n}`,
+//     mensaje: "Otro instante de nuestro comienzo guardado para siempre."
+//   });
+//   saveData();
+//   currentSlide = appState.carrusel.length - 1;
+//   renderCarousel();
+// });
 
 // Soporte para deslizar con el dedo en celulares (swipe)
 let touchStartX = 0;
